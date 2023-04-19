@@ -1,5 +1,4 @@
 import {useEffect, useState} from 'react';
-import PropType from 'prop-types';
 import MediaRow from './mediaRow';
 
 const MediaTable = () => {
