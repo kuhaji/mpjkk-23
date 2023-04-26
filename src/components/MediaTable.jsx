@@ -18,12 +18,11 @@ const MediaTable = () => {
     }
   }, []);
 
-  console.log(MediaArray);
+  // console.log(MediaArray);
   return (
     <table>
       <tbody>
         {MediaArray.map((item, index) => {
-          // eslint-disable-next-line react/no-unknown-property
           return <MediaRow key={index} file={item} />;
         })}
       </tbody>
