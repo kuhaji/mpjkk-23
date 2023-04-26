@@ -1,13 +1,21 @@
+// eslint-disable-next-line no-unused-vars
+import PropTypes from 'prop-types';
 import {useEffect, useState} from 'react';
-import MediaRow from './mediaRow';
+import {baseUrl} from '../utils/variables';
+import MediaRow from './MediaRow';
 
 const MediaTable = () => {
-  const [MediaArray, setMediaArray] = useState([]);
+  const [mediaArray, setMediaArray] = useState([]);
   const getMedia = async () => {
-    const response = await fetch('test.json');
-    const json = await response.json();
-    console.log(json);
-    setMediaArray(json);
+    const response = await fetch(baseUrl + 'media');
+    const files = await response.json();
+    const filesWithThumbnail = await Promise.all(
+      files.map(async (file) => {
+        const response = await fetch(baseUrl + 'media/' + file.file_id);
+        return await response.json();
+      })
+    );
+    setMediaArray(filesWithThumbnail);
   };
 
   useEffect(() => {
@@ -18,11 +26,11 @@ const MediaTable = () => {
     }
   }, []);
 
-  // console.log(MediaArray);
+  console.log(mediaArray);
   return (
     <table>
       <tbody>
-        {MediaArray.map((item, index) => {
+        {mediaArray.map((item, index) => {
           return <MediaRow key={index} file={item} />;
         })}
       </tbody>

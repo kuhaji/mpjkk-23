@@ -1,5 +1,5 @@
 import './App.css';
-import MediaTable from './components/MediaTable';
+import MediaTable from './components/mediaTable';
 
 function App() {
   return <MediaTable />;
