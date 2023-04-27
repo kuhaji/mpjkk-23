@@ -5,9 +5,11 @@ import Home from './views/Home';
 import Single from './views/Single';
 import Profile from './views/Profile';
 
+console.log('base', import.meta.env.BASE_URL);
+
 function App() {
   return (
-    <Router>
+    <Router basename={import.meta.env.BASE_URL}>
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
