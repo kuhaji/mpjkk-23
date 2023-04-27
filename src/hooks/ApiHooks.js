@@ -25,7 +25,7 @@ const useMedia = () => {
       );
       setMediaArray(filesWithThumbnail);
     } catch (error) {
-      console.log('getMedia', error.message);
+      console.error('getMedia', error.message);
     }
   };
 
