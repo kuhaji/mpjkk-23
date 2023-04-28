@@ -1,5 +1,8 @@
 import {useMedia} from '../hooks/ApiHooks';
 import MediaRow from './MediaRow';
+import PropTypes from 'prop-types';
+import {useEffect, useState} from 'react';
+import {baseUrl} from '../utils/variables';
 
 const MediaTable = () => {
   const {mediaArray} = useMedia();

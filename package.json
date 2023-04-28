@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build --base=/~juhavali/MPJKK-23/routing/",
+    "build": "vite build --base=/~juhavali/MPJKK-23/forms/",
     "preview": "vite preview"
   },
   "dependencies": {

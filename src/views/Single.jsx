@@ -10,6 +10,7 @@ const Single = () => {
     <>
       <h1>{file.title}</h1>
       <img src={mediaUrl + file.filename} alt={file.title} />
+      <p>{file.description}</p>
     </>
   );
 };
