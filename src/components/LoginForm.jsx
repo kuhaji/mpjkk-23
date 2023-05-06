@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import {useContext} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {MediaContext} from '../contexts/MediaContext';
-import {useAuthentication} from '../hooks/apiHooks';
+import {useAuthentication} from '../hooks/ApiHooks';
 import useForm from '../hooks/FormHooks';
 
 const LoginForm = (props) => {
@@ -28,7 +28,8 @@ const LoginForm = (props) => {
 
   const {inputs, handleSubmit, handleInputChange} = useForm(
     doLogin,
-    initValues
+    initValues,
+    postLogin // set postLogin as the callback function
   );
 
   return (

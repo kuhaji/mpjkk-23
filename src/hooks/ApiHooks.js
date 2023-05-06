@@ -52,21 +52,11 @@ const useUser = () => {
     return await doFetch(baseUrl + 'users', options);
   };
 
-  const getUserByToken = async (token) => {
-    const options = {
-      method: 'GET',
-      headers: {
-        'x-access-token': token,
-      },
-    };
-    return await doFetch(baseUrl + 'users/user', options);
+  const getUser = async (id) => {
+    return await doFetch(baseUrl + `users/${id}`);
   };
 
-  const getCheckUser = async (username) => {
-    return await doFetch(baseUrl + 'users/username/' + username);
-  };
-
-  return {postUser, getUserByToken, getCheckUser};
+  return {postUser, getUser};
 };
 
 const useAuthentication = () => {
@@ -83,4 +73,25 @@ const useAuthentication = () => {
   return {postLogin};
 };
 
-export {useMedia, useUser, useAuthentication};
+const useLogin = () => {
+  const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const postLogin = async (inputs) => {
+    setIsLoading(true);
+    try {
+      const result = await useAuthentication().postLogin(inputs);
+      setData(result);
+      setError(null);
+    } catch (error) {
+      setError(error);
+      setData(null);
+    }
+    setIsLoading(false);
+  };
+
+  return {data, isLoading, error, postLogin};
+};
+
+export {useMedia, useUser, useAuthentication, useLogin};
