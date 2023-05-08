@@ -1,20 +1,21 @@
-import {useMedia} from '../hooks/ApiHooks';
-import MediaRow from './MediaRow';
+import {ImageList} from '@mui/material';
 import PropTypes from 'prop-types';
 import {useEffect, useState} from 'react';
+import {useMedia} from '../hooks/ApiHooks';
+import {useWindowSize} from '../hooks/WindowHooks';
 import {baseUrl} from '../utils/variables';
+import MediaRow from './MediaRow';
 
 const MediaTable = () => {
   const {mediaArray} = useMedia();
+  const windowSize = useWindowSize();
 
   return (
-    <table>
-      <tbody>
-        {mediaArray.map((item, index) => {
-          return <MediaRow key={index} file={item} />;
-        })}
-      </tbody>
-    </table>
+    <ImageList cols={windowSize.width > 768 ? 3 : 2} gap={8}>
+      {mediaArray.map((item, index) => {
+        return <MediaRow key={index} file={item} />;
+      })}
+    </ImageList>
   );
 };
 
