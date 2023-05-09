@@ -27,7 +27,11 @@ const RegisterForm = ({toggle}) => {
       alert(userResult.message);
       toggle();
     } catch (error) {
-      alert(error.message);
+      if (error.response && error.response.data.code === 11000) {
+        setNotification('Name already exists');
+      } else {
+        alert(error.message);
+      }
     }
   };
 
