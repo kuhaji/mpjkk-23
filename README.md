@@ -2,4 +2,4 @@
 
 <h1>React + Vite application</h1>
 
-Open [https://users.metropolia.fi/~juhavali/MPJKK-23/mui/] (https://users.metropolia.fi/~juhavali/MPJKK-23/mui/)
+Open [https://users.metropolia.fi/~juhavali/MPJKK-23/validation/] (https://users.metropolia.fi/~juhavali/MPJKK-23/validation/)
