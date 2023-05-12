@@ -1,10 +1,4 @@
-import {
-  Button,
-  ButtonGroup,
-  ImageListItem,
-  ImageListItemBar,
-  Box,
-} from '@mui/material';
+import {Button, ImageListItem, ImageListItemBar, Box} from '@mui/material';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 import {mediaUrl} from '../utils/variables';
@@ -49,35 +43,48 @@ const MediaRow = ({file, deleteMedia}) => {
       {hovered && (
         <ImageListItemBar
           actionIcon={
-            <ButtonGroup>
-              <Button
-                component={Link}
-                variant="contained"
-                to="/single"
-                state={{file}}
-              >
-                View
-              </Button>
-              {user && file.user_id === user.user_id && (
-                <>
-                  <Button
-                    component={Link}
-                    variant="contained"
-                    to="/update"
-                    state={{file}}
-                  >
-                    Update
-                  </Button>
-                  <Button
-                    component={Link}
-                    variant="contained"
-                    onClick={doDelete}
-                  >
-                    Delete
-                  </Button>
-                </>
-              )}
-            </ButtonGroup>
+            <Box display="flex" justifyContent="center">
+              <Box sx={{display: 'inline-flex'}}>
+                <Button
+                  component={Link}
+                  to="/single"
+                  state={{file}}
+                  sx={{
+                    backgroundColor: 'black',
+                    color: 'white',
+                    flex: 1,
+                  }}
+                >
+                  View
+                </Button>
+                {user && file.user_id === user.user_id && (
+                  <>
+                    <Button
+                      component={Link}
+                      to="/update"
+                      state={{file}}
+                      sx={{
+                        backgroundColor: 'black',
+                        color: 'white',
+                        flex: 1,
+                      }}
+                    >
+                      Update
+                    </Button>
+                    <Button
+                      onClick={doDelete}
+                      sx={{
+                        backgroundColor: 'black',
+                        color: 'white',
+                        flex: 1,
+                      }}
+                    >
+                      Delete
+                    </Button>
+                  </>
+                )}
+              </Box>
+            </Box>
           }
         />
       )}

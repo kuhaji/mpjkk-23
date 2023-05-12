@@ -28,6 +28,10 @@ const Layout = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [openDrawer, setOpenDrawer] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const handleLinkClick = () => {
+    setOpenDrawer(false); // Close the hamburger navigation
+  };
 
   const getUserInfo = async () => {
     const userToken = localStorage.getItem('userToken');
@@ -46,6 +50,18 @@ const Layout = () => {
 
   useEffect(() => {
     getUserInfo();
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   const theme = createTheme(themeOptions);
@@ -80,15 +96,17 @@ const Layout = () => {
           }}
         >
           <Toolbar disableGutters>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              edge="start"
-              onClick={handleDrawerToggle}
-              sx={{mr: 2, display: {md: 'none'}}}
-            >
-              <MenuIcon />
-            </IconButton>
+            {isMobile && (
+              <IconButton
+                color="black"
+                aria-label="open drawer"
+                edge="start"
+                onClick={handleDrawerToggle}
+                sx={{mr: 2}}
+              >
+                <MenuIcon />
+              </IconButton>
+            )}
             <Typography
               variant="h6"
               noWrap
@@ -106,31 +124,41 @@ const Layout = () => {
             >
               Photography Gallery
             </Typography>
-            <Box sx={{mr: 2}}>
-              <Button sx={{color: 'black'}} component={Link} to="/home">
-                Home
-              </Button>
-              {user ? (
-                <>
-                  <Button sx={{color: 'black'}} component={Link} to="/profile">
-                    Profile
-                  </Button>
-                  <Button sx={{color: 'black'}} component={Link} to="/upload">
-                    Upload
-                  </Button>
-                  <Button sx={{color: 'black'}} component={Link} to="/myfiles">
-                    My Files
-                  </Button>
-                  <Button sx={{color: 'black'}} component={Link} to="/logout">
-                    Logout
-                  </Button>
-                </>
-              ) : (
-                <Button sx={{color: 'black'}} component={Link} to="/">
-                  Login
+            {isMobile ? null : ( // Conditionally render original links
+              <Box sx={{mr: 2}}>
+                <Button sx={{color: 'black'}} component={Link} to="/home">
+                  Home
                 </Button>
-              )}
-            </Box>
+                {user ? (
+                  <>
+                    <Button
+                      sx={{color: 'black'}}
+                      component={Link}
+                      to="/profile"
+                    >
+                      Profile
+                    </Button>
+                    <Button sx={{color: 'black'}} component={Link} to="/upload">
+                      Upload
+                    </Button>
+                    <Button
+                      sx={{color: 'black'}}
+                      component={Link}
+                      to="/myfiles"
+                    >
+                      My Files
+                    </Button>
+                    <Button sx={{color: 'black'}} component={Link} to="/logout">
+                      Logout
+                    </Button>
+                  </>
+                ) : (
+                  <Button sx={{color: 'black'}} component={Link} to="/">
+                    Login
+                  </Button>
+                )}
+              </Box>
+            )}
           </Toolbar>
         </AppBar>
         <Drawer
@@ -140,25 +168,51 @@ const Layout = () => {
           sx={{
             '& .MuiDrawer-paper': {
               width: '250px',
+              color: 'black',
             },
           }}
         >
           <List>
-            <ListItem button component={Link} to="/home">
+            <ListItem
+              button
+              component={Link}
+              to="/home"
+              onClick={handleLinkClick}
+            >
               <ListItemText primary="Home" />
             </ListItem>
             {user && (
               <>
-                <ListItem button component={Link} to="/profile">
+                <ListItem
+                  button
+                  component={Link}
+                  to="/profile"
+                  onClick={handleLinkClick}
+                >
                   <ListItemText primary="Profile" />
                 </ListItem>
-                <ListItem button component={Link} to="/upload">
+                <ListItem
+                  button
+                  component={Link}
+                  to="/upload"
+                  onClick={handleLinkClick}
+                >
                   <ListItemText primary="Upload" />
                 </ListItem>
-                <ListItem button component={Link} to="/myfiles">
+                <ListItem
+                  button
+                  component={Link}
+                  to="/myfiles"
+                  onClick={handleLinkClick}
+                >
                   <ListItemText primary="My Files" />
                 </ListItem>
-                <ListItem button component={Link} to="/logout">
+                <ListItem
+                  button
+                  component={Link}
+                  to="/logout"
+                  onClick={handleLinkClick}
+                >
                   <ListItemText primary="Logout" />
                 </ListItem>
               </>
