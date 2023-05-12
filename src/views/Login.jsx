@@ -1,4 +1,4 @@
-import {Button, Grid, Typography} from '@mui/material';
+import {Button, Box, Typography} from '@mui/material';
 import {useState} from 'react';
 import LoginForm from '../components/LoginForm';
 import RegisterForm from '../components/RegisterForm';
@@ -8,25 +8,30 @@ const Login = () => {
   const toggle = () => {
     setFormToggle(!formToggle);
   };
+
   return (
-    <Grid container direction="column" alignItems="center">
-      <Grid item>
-        <Typography component="h1" variant="h3">
-          {formToggle ? 'Login' : 'Register'}
-        </Typography>
-      </Grid>
-      <Grid item>
+    <Box
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      marginTop="100px"
+    >
+      <Typography component="h1" variant="h3" mb={2}>
+        {formToggle ? 'Login' : 'Register'}
+      </Typography>
+
+      <Box sx={{width: '400px'}}>
         {formToggle ? <LoginForm /> : <RegisterForm toggle={toggle} />}
-      </Grid>
-      <Grid item>
-        <Typography variant="body2" sx={{mt: 2}}>
-          {formToggle ? 'First time here?' : 'Already registered?'}
-        </Typography>
-      </Grid>
-      <Grid item>
-        <Button onClick={toggle}>{formToggle ? 'Register' : 'Login'}</Button>
-      </Grid>
-    </Grid>
+      </Box>
+
+      <Typography variant="body2" mt={2}>
+        {formToggle ? 'First time here?' : 'Already registered?'}
+      </Typography>
+
+      <Button variant="text" onClick={toggle}>
+        {formToggle ? 'Register' : 'Login'}
+      </Button>
+    </Box>
   );
 };
 

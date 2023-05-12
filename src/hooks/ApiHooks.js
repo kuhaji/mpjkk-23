@@ -17,32 +17,42 @@ const doFetch = async (url, options) => {
 const useMedia = (myFilesOnly = false, searchQuery = '') => {
   const [mediaArray, setMediaArray] = useState([]);
   const {user, update} = useContext(MediaContext);
-
   const getMedia = async () => {
     try {
-      const tagResult = await doFetch(baseUrl + 'tags/' + appId);
-      const files = tagResult.length > 0 ? tagResult : [];
+      let files = await useTag().getTag(appId);
 
-      if (myFilesOnly && user && user.user_id) {
-        const filteredFiles = files.filter(
-          (file) => file.user_id === user.user_id
-        );
-        setMediaArray(filteredFiles);
-      } else {
-        setMediaArray(files);
+      if (myFilesOnly && user) {
+        files = files.filter((file) => file.user_id === user.user_id);
       }
+
+      const filesWithThumbnail = await Promise.all(
+        files.map(async (file) => {
+          return await doFetch(baseUrl + 'media/' + file.file_id);
+        })
+      );
+
+      // Filter the media based on search query
+      const filteredMedia = filesWithThumbnail.filter((media) => {
+        return (
+          media.title &&
+          media.description &&
+          (media.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            media.description.toLowerCase().includes(searchQuery.toLowerCase()))
+        );
+      });
+
+      setMediaArray(filteredMedia);
     } catch (error) {
       console.error('getMedia', error.message);
     }
   };
-
   useEffect(() => {
     try {
       getMedia();
     } catch (error) {
       console.log(error.message);
     }
-  }, [update, user]);
+  }, [update]);
 
   const postMedia = async (data, token) => {
     const options = {

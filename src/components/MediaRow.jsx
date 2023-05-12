@@ -3,15 +3,17 @@ import {
   ButtonGroup,
   ImageListItem,
   ImageListItemBar,
+  Box,
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 import {mediaUrl} from '../utils/variables';
-import {useContext} from 'react';
+import {useContext, useState} from 'react';
 import {MediaContext} from '../contexts/MediaContext';
 
 const MediaRow = ({file, deleteMedia}) => {
   const {user, update, setUpdate} = useContext(MediaContext);
+  const [hovered, setHovered] = useState(false);
 
   const doDelete = async () => {
     const sure = confirm('Are you sure?');
@@ -23,8 +25,19 @@ const MediaRow = ({file, deleteMedia}) => {
     }
   };
 
+  const handleMouseEnter = () => {
+    setHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setHovered(false);
+  };
+
   return (
-    <ImageListItem>
+    <ImageListItem
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       <img
         src={
           file.media_type !== 'audio'
@@ -33,37 +46,41 @@ const MediaRow = ({file, deleteMedia}) => {
         }
         alt={file.title}
       />
-      <ImageListItemBar
-        title={file.title}
-        subtitle={file.description}
-        actionIcon={
-          <ButtonGroup>
-            <Button
-              component={Link}
-              variant="contained"
-              to="/single"
-              state={{file}}
-            >
-              View
-            </Button>
-            {user && file.user_id === user.user_id && (
-              <>
-                <Button
-                  component={Link}
-                  variant="contained"
-                  to="/update"
-                  state={{file}}
-                >
-                  Update
-                </Button>
-                <Button component={Link} variant="contained" onClick={doDelete}>
-                  Delete
-                </Button>
-              </>
-            )}
-          </ButtonGroup>
-        }
-      />
+      {hovered && (
+        <ImageListItemBar
+          actionIcon={
+            <ButtonGroup>
+              <Button
+                component={Link}
+                variant="contained"
+                to="/single"
+                state={{file}}
+              >
+                View
+              </Button>
+              {user && file.user_id === user.user_id && (
+                <>
+                  <Button
+                    component={Link}
+                    variant="contained"
+                    to="/update"
+                    state={{file}}
+                  >
+                    Update
+                  </Button>
+                  <Button
+                    component={Link}
+                    variant="contained"
+                    onClick={doDelete}
+                  >
+                    Delete
+                  </Button>
+                </>
+              )}
+            </ButtonGroup>
+          }
+        />
+      )}
     </ImageListItem>
   );
 };

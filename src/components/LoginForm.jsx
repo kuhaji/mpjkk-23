@@ -51,7 +51,12 @@ const LoginForm = () => {
           onChange={handleInputChange}
           value={inputs.password}
         />
-        <Button fullWidth sx={{mt: 1}} variant="contained" type="submit">
+        <Button
+          fullWidth
+          sx={{mt: 1, backgroundColor: 'black'}}
+          variant="contained"
+          type="submit"
+        >
           Login
         </Button>
       </Box>

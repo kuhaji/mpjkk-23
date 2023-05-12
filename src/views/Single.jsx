@@ -104,51 +104,62 @@ const Single = () => {
   console.log(userLike);
 
   return (
-    <>
-      <Typography component="h1" variant="h3">
-        {file.title}
-      </Typography>
-      <Card>
-        {/*
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '100vh',
+        padding: '1rem',
+        flexDirection: 'column', // Added flex-direction: column
+      }}
+    >
+      <div style={{maxWidth: '600px', width: '100%'}}>
+        <Typography component="h1" variant="h3" style={{textAlign: 'center'}}>
+          {file.title}
+        </Typography>
+        <Card>
+          {/*
         toinen tapa
         {file.media_type === 'image' && <img src="" alt="" />}
         {file.media_type === 'video' && <video src="" />}
         {file.media_type === 'audio' && <audio src="" />}
         */}
 
-        <CardMedia
-          controls={true}
-          poster={mediaUrl + file.screenshot}
-          component={componentType}
-          src={mediaUrl + file.filename}
-          title={file.title}
-          style={{
-            width: '100%',
-            height: 400,
-            filter: `
+          <CardMedia
+            controls={true}
+            poster={mediaUrl + file.screenshot}
+            component={componentType}
+            src={mediaUrl + file.filename}
+            title={file.title}
+            style={{
+              width: '100%',
+              height: 400,
+              filter: `
             brightness(${allData.filters.brightness}%)
             contrast(${allData.filters.contrast}%)
             saturate(${allData.filters.saturation}%)
             sepia(${allData.filters.sepia}%)
             `,
-            backgroundImage: file.media_type === 'audio' && `url(./vite.svg)`,
-          }}
-        />
-        <CardContent>
-          <Typography variant="body1">{allData.desc}</Typography>
-          <Typography variant="body2">By: {owner.username}</Typography>
-          <Typography variant="body2">Likes: {likes}</Typography>
-          <ButtonGroup>
-            <Button onClick={doLike} disabled={userLike}>
-              Like
-            </Button>
-            <Button onClick={deleteLike} disabled={!userLike}>
-              Dislike
-            </Button>
-          </ButtonGroup>
-        </CardContent>
-      </Card>
-    </>
+              backgroundImage: file.media_type === 'audio' && `url(./vite.svg)`,
+            }}
+          />
+          <CardContent>
+            <Typography variant="body1">{allData.desc}</Typography>
+            <Typography variant="body2">By: {owner.username}</Typography>
+            <Typography variant="body2">Likes: {likes}</Typography>
+            <ButtonGroup>
+              <Button onClick={doLike} disabled={userLike}>
+                Like
+              </Button>
+              <Button onClick={deleteLike} disabled={!userLike}>
+                Dislike
+              </Button>
+            </ButtonGroup>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
   );
 };
 

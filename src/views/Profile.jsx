@@ -5,7 +5,6 @@ import {
   CardContent,
   List,
   ListItem,
-  ListItemAvatar,
   ListItemIcon,
   ListItemText,
 } from '@mui/material';
@@ -39,22 +38,18 @@ const Profile = () => {
   }, [user]);
 
   return (
-    <Card>
+    <Card sx={{mt: 10}}>
       {user && (
         <CardContent>
+          <Avatar
+            variant="square"
+            src={avatar.filename}
+            imgProps={{
+              alt: `${user.username}'s profile image`,
+            }}
+            sx={{width: '100%', height: '30vh'}}
+          />
           <List>
-            <ListItem>
-              <ListItemAvatar sx={{width: '100%'}}>
-                <Avatar
-                  variant="square"
-                  src={avatar.filename}
-                  imgProps={{
-                    alt: `${user.username}'s profile image`,
-                  }}
-                  sx={{width: '100%', height: '30vh'}}
-                />
-              </ListItemAvatar>
-            </ListItem>
             <ListItem>
               <ListItemIcon>
                 <AccountCircle />

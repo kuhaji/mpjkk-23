@@ -1,21 +1,22 @@
+import React from 'react';
 import {
   AppBar,
-  Container,
-  createTheme,
-  ThemeProvider,
-  Toolbar,
   Box,
   Button,
+  Container,
+  createTheme,
   CssBaseline,
-  Typography,
-  IconButton,
   Drawer,
   List,
   ListItem,
   ListItemText,
+  ThemeProvider,
+  Toolbar,
+  Typography,
+  IconButton,
 } from '@mui/material';
-import {useContext, useEffect, useState} from 'react';
 import {Link, Outlet, useLocation, useNavigate} from 'react-router-dom';
+import {useContext, useEffect, useState} from 'react';
 import {MediaContext} from '../contexts/MediaContext';
 import {useUser} from '../hooks/ApiHooks';
 import {themeOptions} from '../theme/themeOptions';
@@ -56,8 +57,28 @@ const Layout = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Container maxWidth="xl">
-        <AppBar position="sticky" sx={{color: 'white'}}>
+      <Container
+        maxWidth="xl"
+        sx={{
+          paddingLeft: 0,
+          paddingRight: 0,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <AppBar
+          position="fixed"
+          sx={{
+            left: 0,
+            right: 0,
+            padding: '10px',
+            borderRadius: '16px',
+            background: 'rgba(255, 255, 255, 0.5)',
+            backdropFilter: 'blur(10px)',
+            boxShadow: 'none',
+          }}
+        >
           <Toolbar disableGutters>
             <IconButton
               color="inherit"
@@ -74,16 +95,16 @@ const Layout = () => {
               component="a"
               href="/"
               sx={{
-                mr: 2,
-                display: {xs: 'none', md: 'flex'},
+                flexGrow: 1,
                 fontFamily: 'monospace',
                 fontWeight: 700,
                 letterSpacing: '.3rem',
                 color: 'black',
                 textDecoration: 'none',
+                textAlign: 'left',
               }}
             >
-              Digital Photography Portfolio
+              Photography Gallery
             </Typography>
             <Box sx={{mr: 2}}>
               <Button sx={{color: 'black'}} component={Link} to="/home">
@@ -144,9 +165,11 @@ const Layout = () => {
             )}
           </List>
         </Drawer>
-        <main>
-          <Outlet />
-        </main>
+        <Box sx={{flexGrow: 1}}>
+          <main>
+            <Outlet />
+          </main>
+        </Box>
       </Container>
     </ThemeProvider>
   );

@@ -102,7 +102,12 @@ const RegisterForm = ({toggle}) => {
           validators={registerValidators.full_name}
           errorMessages={registerForm.full_name}
         />
-        <Button fullWidth sx={{mt: 1}} variant="contained" type="submit">
+        <Button
+          fullWidth
+          sx={{mt: 1, backgroundColor: 'black'}}
+          variant="contained"
+          type="submit"
+        >
           Register
         </Button>
       </ValidatorForm>
