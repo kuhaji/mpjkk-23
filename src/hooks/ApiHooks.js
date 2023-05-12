@@ -1,5 +1,6 @@
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useContext} from 'react';
 import {appId, baseUrl} from '../utils/variables';
+import {MediaContext} from '../contexts/MediaContext';
 
 const doFetch = async (url, options) => {
   const response = await fetch(url, options);
@@ -13,17 +14,23 @@ const doFetch = async (url, options) => {
   return json;
 };
 
-const useMedia = () => {
+const useMedia = (myFilesOnly = false, searchQuery = '') => {
   const [mediaArray, setMediaArray] = useState([]);
+  const {user, update} = useContext(MediaContext);
+
   const getMedia = async () => {
     try {
-      const files = await useTag().getTag(appId);
-      const filesWithThumbnail = await Promise.all(
-        files.map(async (file) => {
-          return await doFetch(baseUrl + 'media/' + file.file_id);
-        })
-      );
-      setMediaArray(filesWithThumbnail);
+      const tagResult = await doFetch(baseUrl + 'tags/' + appId);
+      const files = tagResult.length > 0 ? tagResult : [];
+
+      if (myFilesOnly && user && user.user_id) {
+        const filteredFiles = files.filter(
+          (file) => file.user_id === user.user_id
+        );
+        setMediaArray(filteredFiles);
+      } else {
+        setMediaArray(files);
+      }
     } catch (error) {
       console.error('getMedia', error.message);
     }
@@ -35,7 +42,7 @@ const useMedia = () => {
     } catch (error) {
       console.log(error.message);
     }
-  }, []);
+  }, [update, user]);
 
   const postMedia = async (data, token) => {
     const options = {
@@ -48,7 +55,29 @@ const useMedia = () => {
     return await doFetch(baseUrl + 'media', options);
   };
 
-  return {mediaArray, postMedia};
+  const deleteMedia = async (id, token) => {
+    const options = {
+      method: 'DELETE',
+      headers: {
+        'x-access-token': token,
+      },
+    };
+    return await doFetch(baseUrl + 'media/' + id, options);
+  };
+
+  const putMedia = async (id, data, token) => {
+    const options = {
+      method: 'PUT',
+      headers: {
+        'x-access-token': token,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    };
+    return await doFetch(baseUrl + 'media/' + id, options);
+  };
+
+  return {mediaArray, postMedia, deleteMedia, putMedia};
 };
 
 const useUser = () => {
@@ -78,7 +107,17 @@ const useUser = () => {
     return available;
   };
 
-  return {postUser, getUserByToken, getCheckUser};
+  const getUser = async (id, token) => {
+    const options = {
+      method: 'GET',
+      headers: {
+        'x-access-token': token,
+      },
+    };
+    return await doFetch(baseUrl + 'users/' + id, options);
+  };
+
+  return {postUser, getUserByToken, getCheckUser, getUser};
 };
 
 const useAuthentication = () => {
@@ -120,4 +159,34 @@ const useTag = () => {
   return {getTag, postTag};
 };
 
-export {useMedia, useUser, useAuthentication, useTag};
+const useFavourite = () => {
+  const postFavourite = async (data, token) => {
+    const fetchOptions = {
+      method: 'POST',
+      headers: {
+        'x-access-token': token,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    };
+    return await doFetch(baseUrl + 'favourites', fetchOptions);
+  };
+
+  const getFavourites = async (id) => {
+    return await doFetch(baseUrl + 'favourites/file/' + id);
+  };
+
+  const deleteFavourite = async (id, token) => {
+    const options = {
+      method: 'DELETE',
+      headers: {
+        'x-access-token': token,
+      },
+    };
+    return await doFetch(baseUrl + 'favourites/file/' + id, options);
+  };
+
+  return {postFavourite, getFavourites, deleteFavourite};
+};
+
+export {useMedia, useUser, useAuthentication, useTag, useFavourite};

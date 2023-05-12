@@ -1,17 +1,16 @@
-import {Box, Button, Slider} from '@mui/material';
-import PropTypes from 'prop-types';
+import {Box, Button, TextField, Slider} from '@mui/material';
 import useForm from '../hooks/FormHooks';
 import {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {appId} from '../utils/variables';
 import {useMedia, useTag} from '../hooks/ApiHooks';
 
-const Upload = (props) => {
+const Upload = () => {
   const [file, setFile] = useState(null);
   const [selectedImage, setSelectedImage] = useState(
-    'https://placekitten.com/600/400'
+    'https://placehold.co/600x400?text=Choose-media'
   );
-  // 'https://placehold.co/600x400?text=Choose-media'
+  // 'https://placekitten.com/600/400'
   const {postMedia} = useMedia();
   const {postTag} = useTag();
   const navigate = useNavigate();
@@ -77,7 +76,7 @@ const Upload = (props) => {
   console.log('Upload', file);
 
   return (
-    <Box>
+    <Box sx={{textAlign: 'center', mt: 4}}>
       <img
         src={selectedImage}
         alt="preview"
@@ -90,29 +89,42 @@ const Upload = (props) => {
           contrast(${filterInputs.contrast}%)
           saturate(${filterInputs.saturation}%)
           sepia(${filterInputs.sepia}%)
-          `,
+        `,
         }}
       />
       <form onSubmit={handleSubmit}>
-        <input
+        <TextField
           onChange={handleInputChange}
           type="text"
           name="title"
+          label="Title"
           value={inputs.title}
-        ></input>
-        <textarea
+          variant="outlined"
+          fullWidth
+          sx={{mt: 4}}
+        />
+        <TextField
           onChange={handleInputChange}
           name="description"
+          label="Description"
           value={inputs.description}
-        ></textarea>
+          multiline
+          rows={4}
+          variant="outlined"
+          fullWidth
+          sx={{mt: 2}}
+        />
         <input
           onChange={handleFileChange}
           type="file"
           name="file"
           accept="image/*,video/*,audio/*"
-        ></input>
-        <Button type="submit">Upload</Button>
+        />
+        <Button variant="contained" type="submit" sx={{mt: 4}}>
+          Upload
+        </Button>
       </form>
+
       <Slider
         name="brightness"
         min={0}
@@ -121,6 +133,7 @@ const Upload = (props) => {
         valueLabelDisplay="auto"
         onChange={handleFilterChange}
         value={filterInputs.brightness}
+        sx={{mt: 4}}
       />
       <Slider
         name="contrast"
@@ -152,7 +165,5 @@ const Upload = (props) => {
     </Box>
   );
 };
-
-Upload.propTypes = {};
 
 export default Upload;

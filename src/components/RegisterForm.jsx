@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import useForm from '../hooks/FormHooks';
 import {useUser} from '../hooks/ApiHooks';
-import {Box, Button, Grid, TextField} from '@mui/material';
+import {Button} from '@mui/material';
 import {Container} from '@mui/system';
 import {ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 import {registerForm} from '../utils/errorMessages';
@@ -27,11 +27,7 @@ const RegisterForm = ({toggle}) => {
       alert(userResult.message);
       toggle();
     } catch (error) {
-      if (error.response && error.response.data.code === 11000) {
-        setNotification('Name already exists');
-      } else {
-        alert(error.message);
-      }
+      alert(error.message);
     }
   };
 
